@@ -1,6 +1,17 @@
 -- ShindoLife AutoMaster Loader
 -- Versão: 1.0.0
 
+local function loadOrion()
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    end)
+    if not success then
+        warn("Erro ao carregar Orion UI:", result)
+        return nil
+    end
+    return result
+end
+
 local function initializeScript()
     -- Configurações centrais do script
     getgenv().Config = {
@@ -13,8 +24,15 @@ local function initializeScript()
         RankupCheckInterval = 60
     }
 
+    -- Carregar Orion UI
+    local OrionLib = loadOrion()
+    if not OrionLib then
+        warn("Não foi possível carregar a interface gráfica. Carregando em modo texto...")
+        -- Modo texto será implementado aqui
+        return
+    end
+
     -- Interface do usuário (GUI)
-    local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
     local Window = OrionLib:MakeWindow({
         Name = "ShindoLife AutoMaster",
         HidePremium = false,
@@ -73,7 +91,13 @@ local function initializeScript()
     })
 
     -- Carregar o script principal
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/SEU_USUARIO_GITHUB/ShindoLife_AutoMaster/main/scripts/project_nexus_automation.lua"))()
+    local success, error = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/jarh5x/ShindoLife-AutoMaster/main/project_nexus_automation.lua"))()
+    end)
+    
+    if not success then
+        warn("Erro ao carregar script principal:", error)
+    end
 end
 
 -- Verificar se está no jogo correto
