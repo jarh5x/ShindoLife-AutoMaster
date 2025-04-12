@@ -12,9 +12,9 @@ local function loadOrion()
     return result
 end
 
-local function initializeScript()
-    -- Configurações centrais do script
-    getgenv().Config = {
+local function initializeTextMode()
+    -- Configurações em modo texto
+    local config = {
         AutoFarm = true,
         AutoBoss = true,
         AutoRankup = true,
@@ -23,12 +23,42 @@ local function initializeScript()
         BossCheckInterval = 30,
         RankupCheckInterval = 60
     }
+    
+    -- Interface de texto simples
+    print("=== ShindoLife AutoMaster (Modo Texto) ===")
+    print("Use os comandos:")
+    print("/farm on/off - Ativar/desativar Auto-Farm")
+    print("/boss on/off - Ativar/desativar Auto-Boss")
+    print("/rank on/off - Ativar/desativar Auto-Rankup")
+    print("/exit - Sair do script")
+    
+    -- Carregar script principal
+    local success, error = pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/jarh5x/ShindoLife-AutoMaster/main/project_nexus_automation.lua"))()
+    end)
+    
+    if not success then
+        warn("Erro ao carregar script principal:", error)
+    end
+end
+
+local function initializeScript()
+    -- Configurações centrais do script
+    getgenv().Config = {
+        AUTO_FARM_ENABLED = true,
+        AUTO_BOSS_ENABLED = true,
+        AUTO_RANKUP_ENABLED = true,
+        PVP_ENHANCEMENTS_ENABLED = true,
+        FARM_INTERVAL = 5,
+        BOSS_CHECK_INTERVAL = 30,
+        RANKUP_CHECK_INTERVAL = 60
+    }
 
     -- Carregar Orion UI
     local OrionLib = loadOrion()
     if not OrionLib then
         warn("Não foi possível carregar a interface gráfica. Carregando em modo texto...")
-        -- Modo texto será implementado aqui
+        initializeTextMode()
         return
     end
 
@@ -66,7 +96,7 @@ local function initializeScript()
         Save = true,
         Flag = "autoFarm",
         Callback = function(Value)
-            getgenv().Config.AutoFarm = Value
+            getgenv().Config.AUTO_FARM_ENABLED = Value
         end
     })
 
@@ -76,7 +106,7 @@ local function initializeScript()
         Save = true,
         Flag = "autoBoss",
         Callback = function(Value)
-            getgenv().Config.AutoBoss = Value
+            getgenv().Config.AUTO_BOSS_ENABLED = Value
         end
     })
 
@@ -86,7 +116,7 @@ local function initializeScript()
         Save = true,
         Flag = "autoRankup",
         Callback = function(Value)
-            getgenv().Config.AutoRankup = Value
+            getgenv().Config.AUTO_RANKUP_ENABLED = Value
         end
     })
 
