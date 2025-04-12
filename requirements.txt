@@ -1,0 +1,8 @@
+# Ferramentas Necessárias para Executar o Script de Shindo Life
+
+- Synapse X: Executor para PC (pago, amplamente usado para scripts Lua no Roblox).
+- KRNL: Executor gratuito para PC, alternativa ao Synapse X.
+- Arceus X: Executor para dispositivos móveis (Android), ideal para usuários de mobile.
+- Script-Ware: Outro executor para PC, compatível com scripts complexos.
+
+Nota: Baixe essas ferramentas apenas de fontes confiáveis para evitar malware. O uso de executores pode violar os termos de serviço do Roblox. 
