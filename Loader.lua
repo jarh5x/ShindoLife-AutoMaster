@@ -1,138 +1,97 @@
--- ShindoLife AutoMaster Loader
+-- ShindoLife AutoMaster
 -- Versão: 1.0.0
+-- Modo Delta Executor
 
-local function loadOrion()
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-    end)
-    if not success then
-        warn("Erro ao carregar Orion UI:", result)
-        return nil
-    end
-    return result
+-- Configurações
+local Config = {
+    AUTO_FARM_ENABLED = true,
+    AUTO_BOSS_ENABLED = true,
+    AUTO_RANKUP_ENABLED = true,
+    PVP_ENHANCEMENTS_ENABLED = true,
+    FARM_INTERVAL = 5,
+    BOSS_CHECK_INTERVAL = 30,
+    RANKUP_CHECK_INTERVAL = 60
+}
+
+-- Função de log
+local function log(message)
+    print("[AutoMaster] " .. message)
 end
 
-local function initializeTextMode()
-    -- Configurações em modo texto
-    local config = {
-        AutoFarm = true,
-        AutoBoss = true,
-        AutoRankup = true,
-        PvPEnhancements = true,
-        FarmInterval = 5,
-        BossCheckInterval = 30,
-        RankupCheckInterval = 60
-    }
-    
-    -- Interface de texto simples
-    print("=== ShindoLife AutoMaster (Modo Texto) ===")
-    print("Use os comandos:")
-    print("/farm on/off - Ativar/desativar Auto-Farm")
-    print("/boss on/off - Ativar/desativar Auto-Boss")
-    print("/rank on/off - Ativar/desativar Auto-Rankup")
-    print("/exit - Sair do script")
-    
-    -- Carregar script principal
-    local success, error = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/jarh5x/ShindoLife-AutoMaster/main/project_nexus_automation.lua"))()
-    end)
-    
-    if not success then
-        warn("Erro ao carregar script principal:", error)
+-- Função de Auto-Farm
+local function autoFarm()
+    if not Config.AUTO_FARM_ENABLED then return end
+    log("Auto-Farm iniciado")
+    while Config.AUTO_FARM_ENABLED do
+        -- Lógica de farm aqui
+        log("Executando ciclo de farm...")
+        wait(Config.FARM_INTERVAL)
     end
 end
 
-local function initializeScript()
-    -- Configurações centrais do script
-    getgenv().Config = {
-        AUTO_FARM_ENABLED = true,
-        AUTO_BOSS_ENABLED = true,
-        AUTO_RANKUP_ENABLED = true,
-        PVP_ENHANCEMENTS_ENABLED = true,
-        FARM_INTERVAL = 5,
-        BOSS_CHECK_INTERVAL = 30,
-        RANKUP_CHECK_INTERVAL = 60
-    }
-
-    -- Carregar Orion UI
-    local OrionLib = loadOrion()
-    if not OrionLib then
-        warn("Não foi possível carregar a interface gráfica. Carregando em modo texto...")
-        initializeTextMode()
-        return
-    end
-
-    -- Interface do usuário (GUI)
-    local Window = OrionLib:MakeWindow({
-        Name = "ShindoLife AutoMaster",
-        HidePremium = false,
-        SaveConfig = true,
-        ConfigFolder = "AutoMasterConfig"
-    })
-
-    -- Criação das abas
-    local FarmTab = Window:MakeTab({
-        Name = "Farming",
-        Icon = "rbxassetid://4483345998",
-        PremiumOnly = false
-    })
-
-    local BossTab = Window:MakeTab({
-        Name = "Boss",
-        Icon = "rbxassetid://4483345998",
-        PremiumOnly = false
-    })
-
-    local RankupTab = Window:MakeTab({
-        Name = "Rankup",
-        Icon = "rbxassetid://4483345998",
-        PremiumOnly = false
-    })
-
-    -- Toggles e botões
-    FarmTab:AddToggle({
-        Name = "Auto Farm",
-        Default = true,
-        Save = true,
-        Flag = "autoFarm",
-        Callback = function(Value)
-            getgenv().Config.AUTO_FARM_ENABLED = Value
-        end
-    })
-
-    BossTab:AddToggle({
-        Name = "Auto Boss",
-        Default = true,
-        Save = true,
-        Flag = "autoBoss",
-        Callback = function(Value)
-            getgenv().Config.AUTO_BOSS_ENABLED = Value
-        end
-    })
-
-    RankupTab:AddToggle({
-        Name = "Auto Rankup",
-        Default = true,
-        Save = true,
-        Flag = "autoRankup",
-        Callback = function(Value)
-            getgenv().Config.AUTO_RANKUP_ENABLED = Value
-        end
-    })
-
-    -- Carregar o script principal
-    local success, error = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/jarh5x/ShindoLife-AutoMaster/main/project_nexus_automation.lua"))()
-    end)
-    
-    if not success then
-        warn("Erro ao carregar script principal:", error)
+-- Função de Auto-Boss
+local function autoBoss()
+    if not Config.AUTO_BOSS_ENABLED then return end
+    log("Auto-Boss iniciado")
+    while Config.AUTO_BOSS_ENABLED do
+        -- Lógica de boss aqui
+        log("Verificando bosses...")
+        wait(Config.BOSS_CHECK_INTERVAL)
     end
 end
 
--- Verificar se está no jogo correto
-if game.PlaceId == 4616652839 then -- ID do Shindo Life
-    initializeScript()
-else
-    warn("Este script só funciona no Shindo Life!")
+-- Função de Auto-Rankup
+local function autoRankup()
+    if not Config.AUTO_RANKUP_ENABLED then return end
+    log("Auto-Rankup iniciado")
+    while Config.AUTO_RANKUP_ENABLED do
+        -- Lógica de rankup aqui
+        log("Verificando rankup...")
+        wait(Config.RANKUP_CHECK_INTERVAL)
+    end
+end
+
+-- Interface de texto
+local function showMenu()
+    print("\n=== ShindoLife AutoMaster ===")
+    print("Status: Ativo")
+    print("\nComandos disponíveis:")
+    print("1 - Ativar/Desativar Auto-Farm")
+    print("2 - Ativar/Desativar Auto-Boss")
+    print("3 - Ativar/Desativar Auto-Rankup")
+    print("4 - Sair")
+    print("\nStatus atual:")
+    print("Auto-Farm: " .. (Config.AUTO_FARM_ENABLED and "Ativo" or "Inativo"))
+    print("Auto-Boss: " .. (Config.AUTO_BOSS_ENABLED and "Ativo" or "Inativo"))
+    print("Auto-Rankup: " .. (Config.AUTO_RANKUP_ENABLED and "Ativo" or "Inativo"))
+end
+
+-- Iniciar o script
+log("Iniciando ShindoLife AutoMaster...")
+
+-- Iniciar as automações
+spawn(autoFarm)
+spawn(autoBoss)
+spawn(autoRankup)
+
+-- Mostrar menu inicial
+showMenu()
+
+-- Loop principal
+while true do
+    local input = read()
+    if input == "1" then
+        Config.AUTO_FARM_ENABLED = not Config.AUTO_FARM_ENABLED
+        log("Auto-Farm: " .. (Config.AUTO_FARM_ENABLED and "Ativado" or "Desativado"))
+    elseif input == "2" then
+        Config.AUTO_BOSS_ENABLED = not Config.AUTO_BOSS_ENABLED
+        log("Auto-Boss: " .. (Config.AUTO_BOSS_ENABLED and "Ativado" or "Desativado"))
+    elseif input == "3" then
+        Config.AUTO_RANKUP_ENABLED = not Config.AUTO_RANKUP_ENABLED
+        log("Auto-Rankup: " .. (Config.AUTO_RANKUP_ENABLED and "Ativado" or "Desativado"))
+    elseif input == "4" then
+        log("Encerrando script...")
+        break
+    end
+    showMenu()
 end 
